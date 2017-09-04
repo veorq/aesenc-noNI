@@ -22,10 +22,10 @@ static const uint8_t sbox[256] =
   0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf, 0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42,
   0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 };
 
+#define XT(x) (((x) << 1) ^ ((((x) >> 7) & 1) * 0x1b))
 
 void aesenc (uint8_t *s, const uint8_t *rk) {
     uint8_t i, t, u, v[4][4];
-#define XT(x) (((x) << 1) ^ ((((x) >> 7) & 1) * 0x1b))
     for (i = 0; i < 16; ++i) v[((i / 4) + 4 - (i%4) ) % 4][i % 4] = sbox[s[i]];
     for (i = 0; i < 4; ++i) {
         t = v[i][0];
@@ -40,7 +40,6 @@ void aesenc (uint8_t *s, const uint8_t *rk) {
 
 void aesenclast (uint8_t *s, const uint8_t *rk) {
     uint8_t i, v[4][4];
-#define XT(x) (((x) << 1) ^ ((((x) >> 7) & 1) * 0x1b))
     for (i = 0; i < 16; ++i) v[((i / 4) + 4 - (i%4) ) % 4][i % 4] = sbox[s[i]];
     for (i = 0; i < 16; ++i) s[i] = v[i / 4][i % 4] ^ rk[i];
 }
